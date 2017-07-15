@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+
+
+     <link rel="stylesheet" type="text/css" href="main.css">
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="Eric's stupid game.html">Ball</a></li>
+                <li><a href="dodgeball.html">Dodgeball</a></li>
+                <li><a href="click.html">Click</a></li>
+                <li><a href="game.html">Testing</a></li>
+            </ul>
+        </nav>
+
+        <h1>Dodgeball</h1>
+
+        <div class="instructions">
+            Use the arrow keys to avoid the balls. A new ball spawns every 5 seconds. You get multiple lives.
+        </div>
+
+
+
+<head>
+    <meta charset="utf-8" />
+    <title>Gamedev Canvas Workshop</title>
+    <style>
+    	* { padding: 0; margin: 0; }
+    	canvas { background: #eee; display: block; margin: 0 auto; }
+    </style>
+</head>
+<body>
+
+<canvas id="myCanvas" width="700" height="360"></canvas>
+
+
+<script>
+
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+
+var ball = {'ballRadius': 10, 'x': Math.floor(Math.random() * (canvas.width * 0.3)) + canvas.width * 0.7, 'y': Math.floor(Math.random() * (canvas.height * 0.35)) + canvas.height * 0.7, 'dx': 1, 'dy':-1}
+
+setInterval(add_ball, 4000);
+var ballarray = [];
+var ball1 = make_ball();
+ballarray.push(ball1);
+var alive = true;
+var lives = 50;
+var playerHeight = 25;
+var playerWidth = 25;
+var playerX = (canvas.width-playerWidth)/2;
+var playerY = (canvas.height-playerHeight)/2;
+var rightPressed = false;
+var leftPressed = false;
+var upPressed = false;
+var downPressed = false;
+
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+
+
+
+/*
+function ball(r, x, y, dx, dy)
+{
+    this.ballRadius = r;
+    this.x = 
+}
+*/
+function make_ball()
+{
+    return {'ballRadius': 10, 'x': Math.floor(Math.random() * (canvas.width * 0.3)) + canvas.width * 0.7, 'y': Math.floor(Math.random() * (canvas.height * 0.3)) + canvas.height * 0.7,'dx': Math.floor(Math.random() * 2) + 1, 'dy':Math.floor(Math.random() * 2) + 1};
+}
+
+function add_ball()
+{
+    var ball0 = make_ball();
+    ballarray.push(ball0);
+}
+
+function keyDownHandler(e) {
+    if(e.keyCode == 39) {
+        rightPressed = true;
+    }
+    else if(e.keyCode == 37) {
+        leftPressed = true;
+    }
+    else if(e.keyCode == 38) {
+        upPressed = true;
+    }
+    else if(e.keyCode == 40) {
+        downPressed = true;
+    }
+}
+function keyUpHandler(e) {
+    if(e.keyCode == 39) {
+        rightPressed = false;
+    }
+    else if(e.keyCode == 37) {
+        leftPressed = false;
+    }
+     else if(e.keyCode == 38) {
+        upPressed = false;
+    }
+     else if(e.keyCode == 40) {
+        downPressed = false;
+    }
+}
+
+function drawBall() {
+    for (i = 0; i < ballarray.length; i++) {
+        ctx.beginPath();
+        ctx.arc(ballarray[i].x, ballarray[i].y, ballarray[i].ballRadius, 0, Math.PI*2);
+        ctx.fillStyle = "#DD001D";
+        ctx.fill();
+        ctx.closePath();
+    }
+}
+function drawPlayer() {
+    ctx.beginPath();
+    ctx.rect(playerX, playerY, playerWidth, playerHeight);
+    ctx.fillStyle = "#0095DD";
+    ctx.fill();
+    ctx.closePath();
+}
+
+
+function draw() {
+    if(alive) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawBall();
+    drawPlayer();
+    //setTimeout(add_ball, 3000);
+    
+
+	
+    /*
+	if (time%1000 == 0 && dx < 10 && dx > -10){
+		if (dx > 0)
+		{	dx++;}
+		else
+		{	dx--;}
+		if (dy > 0)
+		{	dy++;}
+		else
+		{	dy--;}
+	}
+    */
+    for (i = 0; i < ballarray.length; i++) {
+    if(ballarray[i].x + ballarray[i].dx > canvas.width-ballarray[i].ballRadius || ballarray[i].x + ballarray[i].dx < ballarray[i].ballRadius) {
+        ballarray[i].dx = -ballarray[i].dx;
+    }
+    if(ballarray[i].y + ballarray[i].dy > canvas.height-ballarray[i].ballRadius || ballarray[i].y + ballarray[i].dy < ballarray[i].ballRadius) {
+        ballarray[i].dy = -ballarray[i].dy;
+    }
+    // balls bounce off each other
+    for (j = 0; j < ballarray.length; j++) {
+        if (ballarray[i] != ballarray[j]) {
+            if (Math.abs(ballarray[i].x-ballarray[j].x) < 50 && Math.abs(ballarray[i].y-ballarray[j].y) < 50) {
+                ballarray[i].dx = -ballarray[i].dx;
+                ballarray[i].dy = -ballarray[i].dy;
+                ballarray[j].dx = -ballarray[j].dx;
+                ballarray[j].dy = -ballarray[j].dy;
+            }
+
+        }
+
+    }
+
+    if(Math.abs(ballarray[i].x - playerX) < (playerWidth)/2 + ballarray[i].ballRadius && Math.abs(ballarray[i].y-playerY) < (playerHeight)/2 + ballarray[i].ballRadius) {
+
+        lives--;
+
+        if(lives == 0) {
+            alive = false;
+        }
+    }
+    } 
+
+    if(rightPressed && playerX < canvas.width-playerWidth) {
+        playerX += 3;
+    }
+    else if(leftPressed && playerX > 0) {
+        playerX -= 3;
+    }
+    else if(downPressed && playerY < canvas.height-playerHeight) {
+    	playerY += 3;
+    }
+    else if(upPressed && playerY > 0) {
+    	playerY -= 3;
+    }
+    
+    for (i = 0; i < ballarray.length; i++) {
+	   ballarray[i].x += ballarray[i].dx;
+       ballarray[i].y += ballarray[i].dy;
+    }
+    }
+}
+
+setInterval(draw, 10);
+
+setInterval(draw, 10);
+</script>
+
+</body>
+</html>

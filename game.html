@@ -1,0 +1,130 @@
+<html>
+<body>
+
+        <link rel="stylesheet" type="text/css" href="main.css">
+    <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="Eric's stupid game.html">Ball</a></li>
+                <li><a href="dodgeball.html">Dodgeball</a></li>
+                <li><a href="click.html">Click</a></li>
+                <li><a href="game.html">Testing</a></li>
+            </ul>
+        </nav>
+     
+        <h1>Testing</h1>
+
+        <div class="instructions">
+            This was going to be a pseudo flappy bird but there wasn't enough time to complete it.
+        </div>
+        
+<style>
+     canvas { 
+        background: #eee; display: block; margin: 20px auto 0 auto; 
+    }
+</style>
+
+<canvas id="myCanvas" width="600" height="360"></canvas>
+
+<script>
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+var x = canvas.width/2;
+var y = canvas.height-30;
+var dx = 2;
+var dy = -2;
+var playerHeight = 40;
+var playerWidth = 40;
+var playerX = (canvas.width-playerWidth)/2;
+var playerY = (canvas.height-playerHeight)/2;
+var upPressed = false;
+var downPressed = false;
+var time = 0;
+var rect1Ht = 0;
+var rect2Ht = 0;
+
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+
+function setRectHts(){
+    rect1Ht = (0.7*canvas.height) * Math.random();
+    rect2Ht = canvas.height - rect1Ht - 100;
+}
+
+function keyDownHandler(e) {
+    if(e.keyCode == 38) {
+        upPressed = true;
+    }
+    else if(e.keyCode == 40) {
+        downPressed = true;
+    }
+}
+function keyUpHandler(e) {
+     if(e.keyCode == 38) {
+        upPressed = false;
+    }
+     else if(e.keyCode == 40) {
+        downPressed = false;
+    }
+}
+
+function drawPlayer() {
+    ctx.beginPath();
+    ctx.rect(playerX, playerY, playerWidth, playerHeight);
+    ctx.fillStyle = "#ffff99";
+    ctx.fill();
+    ctx.closePath();
+}
+
+function drawRect1() {
+    ctx.beginPath();
+    ctx.rect(canvas.width - 80, canvas.height - rect1Ht, 80, rect1Ht);
+    ctx.fillStyle = "#ff6666";
+    ctx.fill();
+    ctx.closePath();
+}
+
+function drawRect2() {
+    ctx.beginPath();
+    ctx.rect(canvas.width - 80, 0, 80, rect2Ht);
+    ctx.fillStyle = "#e6b3ff";
+    ctx.fill();
+    ctx.closePath();
+}
+
+function draw() {
+    setRectHts();
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (time%1000 == 0){
+        drawRect1();
+        drawRect2();
+    }
+
+
+    drawPlayer();
+    if(downPressed && playerY < canvas.height-playerHeight) {
+     playerY += 5;
+    }
+    else if(upPressed && playerY > 0) {
+     playerY -= 5;
+    }
+ 
+     if ((playerX+playerWidth/2) > x && (playerX-playerWidth/2) < x && (playerY+playerHeight/2) > y && (playerY-playerHeight/2) < y)
+      {alive = false;}
+    
+    x += dx;
+    y += dy;
+}
+
+
+setInterval(draw, 50);
+
+setInterval(draw, 50);
+</script>
+
+
+
+</body>
+</html> 

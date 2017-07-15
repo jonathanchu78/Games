@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+	<head>
+		<title>
+			Click
+		</title>
+		<link rel="stylesheet" type="text/css" href="main.css">
+
+	  <meta charset="utf-8" />
+
+    <style>
+    	* { padding: 0; margin: 0; }
+    	canvas { background: #eee; display: block; margin: 5px auto; }
+    </style>
+	</head>
+
+
+	<body>
+		<nav>
+			<ul>
+				     <li><a href="index.html">Home</a></li>
+                <li><a href="Eric's stupid game.html">Ball</a></li>
+                <li><a href="dodgeball.html">Dodgeball</a></li>
+                <li><a href="click.html">Click</a></li>
+                <li><a href="game.html">Testing</a></li>
+			</ul>
+		</nav>
+
+		<h1>Click</h1>
+
+		<div class="instructions">
+			Player 1 (left) presses "A" key; player 2 (right) presses "K". <br> First player to 20 clicks has their box colored, and other player's box is grayed.
+		</div>
+
+			
+
+
+<canvas id="myCanvas" width="600" height="400"></canvas>
+
+<script>
+	var canvas = document.getElementById("myCanvas");
+	var ctx = canvas.getContext("2d");
+	var clicks1 = 0;
+	var clicks2 = 0;
+	var rightPressed = false;
+	var leftPressed = false;
+	var time1 = 100;
+	var time2 = 100;
+	var player1 = false;
+	var player2 = false;
+
+	document.addEventListener("keydown", keyDownHandler, false);
+	document.addEventListener("keyup", keyUpHandler, false);
+
+
+	function keyDownHandler(e) {
+	    if(e.keyCode == 65) {
+	        rightPressed = true;
+	    }
+	    if(e.keyCode == 75) {
+	        leftPressed = true;
+	    }
+	}
+	function keyUpHandler(e) {
+	    if(e.keyCode == 65) {
+	        rightPressed = false;
+	    }
+	    if(e.keyCode == 75) {
+	        leftPressed = false;
+	    }
+	}
+
+	function drawButton1() {
+	    ctx.beginPath();
+	    ctx.rect(0, 0, (canvas.width/2), canvas.height);
+	    ctx.fillStyle = "#FFFF70";
+		//ctx.fillStyle = 'rgb(0, 0, ' +  (255 * (100 - time)) + ')';
+	    ctx.fill();
+	    ctx.closePath();
+	}
+	function drawButton2() {
+	    ctx.beginPath();
+	    ctx.rect((canvas.width/2), 0, (canvas.width/2), canvas.height);
+	    ctx.fillStyle = "#0095DD";
+	    //ctx.fillStyle = "rgb(" +  (255 * (100 - time)) + ",0, 0)";
+	    ctx.fill();
+	    ctx.closePath();
+	}
+
+	function draw() {
+		if(player1 == false && player2 == false){
+			if(rightPressed) {
+				clicks1++;
+				time1 = 0;
+				rightPressed = false;
+			}
+			if(leftPressed) {
+				clicks2++;
+				time2 = 0;
+				leftPressed = false;
+			}
+			
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			if (time1 < 50){drawButton1();}
+			if (time2 < 50){drawButton2();}
+			
+			if (time1 < 100);
+			{	time1++;}
+			if (time2 < 100)
+			{	time2++;}
+			
+			if (clicks1 == 30)
+			{	player1 = true;}
+			if (clicks2 == 30)
+			{	player2 = true;}
+		}
+		else if (player1 == true)
+		{
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			drawButton1();
+		}
+		else
+		{
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+			drawButton2();
+		}
+	}
+
+	setInterval(draw, 10);
+
+	setInterval(draw, 10);
+</script>
+
+
+		<footer>2017 Jonathan Chu, Derek Xu, Eric Zhang</footer>
+
+	</body>
+</html>

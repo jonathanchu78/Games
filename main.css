@@ -1,0 +1,73 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	padding: none;
+	margin: none;
+	background: #80bfff;
+}
+
+h1 {
+	display: block;
+	text-align: center;
+	font-family: "Century Gothic";
+	color: white;
+	font-size: 50px;
+	padding: 15px;
+}
+
+nav {
+	display: block;
+	background: white;
+	padding: 5px;
+}
+
+nav ul{
+	margin: 0;
+	padding: 0 0 0 15px;
+	display: block;
+}
+
+nav ul li {
+	font-size: 20px;
+	font-family: "century gothic";
+	font-weight: bold;
+	background: white;
+	color: #80bfff;
+	display: inline-block;
+	list-style-type: none;
+	padding: 2px 15px;
+}
+
+a { color: black } /* Globally */
+
+/* Each state */
+
+a:visited { text-decoration: none; color:black; }
+a:hover { text-decoration: none; color:black; }
+a:focus { text-decoration: none; color:black; }
+a:hover, a:active { text-decoration: none; color: #999 }
+
+
+
+div.instructions {
+	font-family: "Century Gothic";
+	color: yellow;
+	text-align: center;
+	padding: 0 0 20px 0;
+}
+
+
+
+footer {
+	font-family: "Century Gothic";
+	font-size: 15px;
+	color: white;
+	position: absolute;
+	bottom: 10px;
+}
+
+
+
